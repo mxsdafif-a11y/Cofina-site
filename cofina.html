@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cofina Specialty Coffee — Al Warqa, Dubai & Sharjah</title>
+<meta name="description" content="Cofina Specialty Coffee — Premium specialty coffee in Al Warqa Dubai and Sharjah. Hand-crafted espresso, signature Spanish Lattes, manual brews and more."/>
+<meta property="og:title" content="Cofina Specialty Coffee"/>
+<meta property="og:description" content="Your neighborhood specialty coffee house in Dubai & Sharjah."/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --espresso:   #1C1008;
+  --roast:      #2E1A0E;
+  --mahogany:   #4A2C17;
+  --caramel:    #8B5E3C;
+  --latte:      #C4956A;
+  --cream:      #F0E6D3;
+  --foam:       #FAF5EC;
+  --chalk:      #FDFAF6;
+  --charcoal:   #2C2C2C;
+  --ash:        #6B6560;
+  --font-disp:  'Cormorant Garamond', serif;
+  --font-head:  'Playfair Display', serif;
+  --font-body:  'Jost', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--chalk);
+  color: var(--espresso);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cur-dot {
+  position: fixed; width:8px; height:8px;
+  background: var(--caramel); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+}
+.cur-ring {
+  position:fixed; width:32px; height:32px;
+  border:1px solid rgba(139,94,60,0.45); border-radius:50%;
+  pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition: width .3s, height .3s, border-color .3s;
+}
+
+/* ── LOADER ── */
+#loader {
+  position:fixed; inset:0; background:var(--espresso);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:24px; z-index:9990;
+}
+.loader-bean {
+  width:56px; height:56px;
+  animation: beanSpin 1.2s ease-in-out infinite;
+}
+@keyframes beanSpin {
+  0%,100%{transform:rotate(0deg) scale(1);}
+  50%{transform:rotate(180deg) scale(1.15);}
+}
+.loader-name {
+  font-family:var(--font-disp);
+  font-size:2.2rem; font-weight:300;
+  letter-spacing:.35em; color:var(--cream);
+  text-transform:uppercase;
+}
+.loader-line {
+  width:120px; height:1px; background:rgba(240,230,211,.15);
+  position:relative; overflow:hidden;
+}
+.loader-line::after {
+  content:''; position:absolute; top:0; left:-100%;
+  width:100%; height:100%; background:var(--latte);
+  animation: lineLoad 1.4s ease-in-out forwards;
+}
+@keyframes lineLoad { to { left:0%; } }
+
+/* ── PROGRESS ── */
+#progress {
+  position:fixed; top:0; left:0; height:1px;
+  background: linear-gradient(to right, var(--caramel), var(--latte));
+  z-index:200; width:0%;
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:24px 6vw;
+  display:flex; justify-content:space-between; align-items:center;
+  transition: background .5s, padding .4s;
+}
+nav.solid {
+  background:rgba(250,245,236,.96);
+  backdrop-filter:blur(12px);
+  padding:16px 6vw;
+  border-bottom:1px solid rgba(139,94,60,.1);
+}
+.nav-logo {
+  font-family:var(--font-disp);
+  font-size:1.5rem; font-weight:400;
+  letter-spacing:.2em; color:var(--espresso);
+  text-decoration:none;
+}
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a {
+  font-family:var(--font-body);
+  font-size:.68rem; font-weight:400;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ash); text-decoration:none;
+  transition:color .2s;
+}
+.nav-links a:hover { color:var(--caramel); }
+.nav-order {
+  font-family:var(--font-body);
+  font-size:.65rem; font-weight:500;
+  letter-spacing:.15em; text-transform:uppercase;
+  color:var(--chalk); background:var(--mahogany);
+  padding:11px 28px; text-decoration:none;
+  transition:background .25s;
+}
+.nav-order:hover { background:var(--caramel); }
+
+/* ── HERO ── */
+#hero {
+  height:100vh; position:relative;
+  display:flex; flex-direction:column;
+  justify-content:flex-end; padding:0 6vw 10vh;
+  overflow:hidden; background:var(--espresso);
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at 70% 40%, #2E1A0E 0%, #0D0804 100%);
+}
+/* Animated steam */
+.steam-wrap {
+  position:absolute; left:50%; top:0;
+  transform:translateX(-50%);
+  width:100%; height:100%;
+  pointer-events:none;
+}
+.steam {
+  position:absolute;
+  width:2px;
+  background: linear-gradient(to top, transparent, rgba(240,230,211,.12), transparent);
+  animation: steamRise linear infinite;
+  border-radius:4px;
+}
+@keyframes steamRise {
+  0%   { transform:translateY(100%) scaleX(1); opacity:0; }
+  20%  { opacity:1; }
+  80%  { opacity:.6; }
+  100% { transform:translateY(-20%) scaleX(1.8) rotate(5deg); opacity:0; }
+}
+
+/* SVG Coffee Cup Scene */
+.cup-scene {
+  position:absolute;
+  right:6%; top:50%; transform:translateY(-50%);
+  width:42%; max-width:560px;
+}
+
+/* Hero text */
+.hero-eyebrow {
+  font-family:var(--font-body);
+  font-size:.62rem; font-weight:400;
+  letter-spacing:.35em; text-transform:uppercase;
+  color:var(--latte); margin-bottom:18px;
+  opacity:0;
+}
+.hero-title {
+  font-family:var(--font-disp);
+  font-size:clamp(3.5rem, 10vw, 9rem);
+  font-weight:300; line-height:.95;
+  letter-spacing:.01em; color:var(--cream);
+  opacity:0;
+}
+.hero-title em {
+  font-style:italic; color:var(--latte);
+}
+.hero-sub {
+  font-family:var(--font-body);
+  font-size:.9rem; font-weight:300;
+  color:rgba(240,230,211,.55);
+  max-width:360px; line-height:1.8;
+  margin-top:22px; opacity:0;
+}
+.hero-actions {
+  display:flex; gap:16px; margin-top:36px;
+  opacity:0;
+}
+.btn-light {
+  font-family:var(--font-body);
+  font-size:.65rem; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--espresso); background:var(--cream);
+  padding:14px 36px; text-decoration:none;
+  transition:background .25s, color .25s;
+  display:inline-block;
+}
+.btn-light:hover { background:var(--latte); color:var(--chalk); }
+.btn-ghost {
+  font-family:var(--font-body);
+  font-size:.65rem; font-weight:400;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(240,230,211,.7);
+  border:1px solid rgba(240,230,211,.2);
+  padding:14px 36px; text-decoration:none;
+  transition:border-color .25s, color .25s;
+  display:inline-block;
+}
+.btn-ghost:hover { border-color:var(--latte); color:var(--latte); }
+.hero-scroll {
+  position:absolute; bottom:40px; left:50%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  opacity:0;
+}
+.scroll-txt {
+  font-family:var(--font-body);
+  font-size:.55rem; letter-spacing:.3em;
+  text-transform:uppercase; color:rgba(240,230,211,.35);
+  writing-mode:vertical-rl;
+}
+.scroll-tick {
+  width:1px; height:48px;
+  background:linear-gradient(to bottom, var(--latte), transparent);
+  animation:tickPulse 2s ease-in-out infinite;
+}
+@keyframes tickPulse {
+  0%,100%{opacity:1; transform:scaleY(1);}
+  50%{opacity:.3; transform:scaleY(.6);}
+}
+
+/* ── JOURNEY (sticky scroll) ── */
+#journey { min-height:400vh; position:relative; }
+.journey-sticky {
+  position:sticky; top:0; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; background:var(--espresso);
+}
+.journey-bg {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at center, #2E1A0E 0%, var(--espresso) 70%);
+}
+
+/* Bean → Cup animation canvas */
+.anim-stage {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+}
+#beanSvg {
+  position:absolute;
+  width:200px;
+}
+#cupSvg {
+  position:absolute;
+  width:280px;
+  opacity:0;
+}
+#pourSvg {
+  position:absolute;
+  width:180px;
+  top:10%;
+  opacity:0;
+}
+
+/* Journey text panels */
+.j-panel {
+  position:absolute; inset:0;
+  display:flex; align-items:center;
+  padding:0 6vw;
+  opacity:0; pointer-events:none;
+}
+.j-panel.right { justify-content:flex-end; }
+.j-content { max-width:380px; }
+.j-step {
+  font-family:var(--font-body);
+  font-size:.58rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--latte);
+  margin-bottom:14px;
+}
+.j-title {
+  font-family:var(--font-disp);
+  font-size:clamp(2.5rem, 5vw, 4.5rem);
+  font-weight:300; line-height:1.05;
+  color:var(--cream); margin-bottom:16px;
+}
+.j-title em { font-style:italic; color:var(--latte); }
+.j-body {
+  font-family:var(--font-body);
+  font-size:.85rem; font-weight:300;
+  color:rgba(240,230,211,.55); line-height:1.9;
+}
+.j-price {
+  font-family:var(--font-body);
+  font-size:.7rem; letter-spacing:.15em;
+  color:var(--latte); margin-top:20px;
+  border-top:1px solid rgba(196,149,106,.2);
+  padding-top:16px; display:inline-block;
+}
+
+/* Big ambient text */
+#ambientWord {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-disp);
+  font-size:clamp(8rem, 20vw, 18rem);
+  font-weight:300; font-style:italic;
+  color:rgba(196,149,106,.04);
+  letter-spacing:.05em;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ── SIGNATURE DRINK REVEAL ── */
+#signature {
+  background:var(--cream);
+  padding:130px 6vw;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.sig-label {
+  font-family:var(--font-body);
+  font-size:.6rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--caramel);
+  margin-bottom:16px;
+}
+.sig-title {
+  font-family:var(--font-disp);
+  font-size:clamp(2.5rem, 5vw, 4.5rem);
+  font-weight:300; line-height:1.05;
+  margin-bottom:28px;
+}
+.sig-title em { font-style:italic; color:var(--caramel); }
+.sig-body {
+  font-size:.88rem; font-weight:300;
+  color:var(--ash); line-height:1.9;
+  margin-bottom:32px;
+}
+.sig-visual {
+  position:relative;
+  aspect-ratio:4/5;
+  background:var(--roast);
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.sig-visual::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 60%, rgba(28,16,8,.6));
+}
+.sig-cup-large {
+  width:75%;
+  position:relative; z-index:2;
+}
+.sig-name-overlay {
+  position:absolute;
+  bottom:32px; left:32px; z-index:3;
+  font-family:var(--font-disp);
+  font-size:2.5rem; font-weight:300;
+  font-style:italic; color:var(--cream);
+}
+/* Latte art swirl inside cup */
+.swirl-line {
+  animation:swirlDraw 2s ease-in-out infinite alternate;
+}
+@keyframes swirlDraw {
+  0%{stroke-dashoffset:200;}
+  100%{stroke-dashoffset:0;}
+}
+
+/* ── MENU ── */
+#menu {
+  background:var(--espresso);
+  padding:130px 6vw;
+}
+.menu-eyebrow {
+  font-family:var(--font-body);
+  font-size:.6rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--latte);
+  margin-bottom:16px;
+}
+.menu-title {
+  font-family:var(--font-disp);
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:300; color:var(--cream);
+  line-height:1; margin-bottom:64px;
+  letter-spacing:.02em;
+}
+.menu-title em { font-style:italic; color:var(--latte); }
+.menu-tabs {
+  display:flex; gap:0; margin-bottom:48px;
+  border-bottom:1px solid rgba(196,149,106,.15);
+}
+.tab-btn {
+  font-family:var(--font-body);
+  font-size:.65rem; letter-spacing:.18em;
+  text-transform:uppercase; color:rgba(240,230,211,.4);
+  background:none; border:none; cursor:pointer;
+  padding:12px 28px 14px;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+  transition:color .2s, border-color .2s;
+}
+.tab-btn.active { color:var(--latte); border-bottom-color:var(--latte); }
+.menu-panel { display:none; }
+.menu-panel.active { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:1px; background:rgba(196,149,106,.08); }
+.menu-item {
+  background:var(--espresso);
+  padding:28px 32px;
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:20px;
+  transition:background .2s;
+}
+.menu-item:hover { background:#241508; }
+.item-name {
+  font-family:var(--font-disp);
+  font-size:1.15rem; font-weight:400;
+  color:var(--cream); margin-bottom:6px;
+}
+.item-desc {
+  font-size:.75rem; font-weight:300;
+  color:rgba(240,230,211,.4); line-height:1.6;
+}
+.item-price {
+  font-family:var(--font-body);
+  font-size:.75rem; font-weight:500;
+  letter-spacing:.05em; color:var(--latte);
+  white-space:nowrap; flex-shrink:0;
+  margin-top:4px;
+}
+
+/* ── AMBIANCE STRIP ── */
+#ambiance {
+  background:var(--roast);
+  padding:100px 6vw;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:2px;
+  overflow:hidden;
+}
+.amb-card {
+  background:var(--mahogany);
+  padding:48px 36px;
+  position:relative; overflow:hidden;
+}
+.amb-card::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, transparent 70%, rgba(196,149,106,.08));
+}
+.amb-num {
+  font-family:var(--font-disp);
+  font-size:5rem; font-weight:300;
+  color:rgba(196,149,106,.1);
+  line-height:1; margin-bottom:-16px;
+}
+.amb-label {
+  font-family:var(--font-body);
+  font-size:.58rem; letter-spacing:.25em;
+  text-transform:uppercase; color:var(--latte);
+  margin-bottom:12px;
+}
+.amb-title {
+  font-family:var(--font-disp);
+  font-size:1.8rem; font-weight:400;
+  color:var(--cream); margin-bottom:12px;
+}
+.amb-body {
+  font-size:.8rem; font-weight:300;
+  color:rgba(240,230,211,.5); line-height:1.8;
+}
+
+/* ── REVIEWS ── */
+#reviews {
+  background:var(--foam);
+  padding:130px 6vw;
+  overflow:hidden;
+}
+.rev-eyebrow {
+  font-family:var(--font-body);
+  font-size:.6rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--caramel);
+  margin-bottom:16px;
+}
+.rev-title {
+  font-family:var(--font-disp);
+  font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:300; margin-bottom:56px;
+}
+.rev-title em { font-style:italic; color:var(--caramel); }
+.rev-track {
+  display:flex; gap:20px;
+  animation: revScroll 35s linear infinite;
+  width:max-content;
+}
+.rev-track:hover { animation-play-state:paused; }
+@keyframes revScroll {
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+.rev-card {
+  width:360px; flex-shrink:0;
+  background:var(--chalk);
+  border:1px solid rgba(139,94,60,.12);
+  padding:36px;
+}
+.rev-stars {
+  color:var(--caramel); font-size:.8rem;
+  letter-spacing:4px; margin-bottom:18px;
+}
+.rev-text {
+  font-family:var(--font-disp);
+  font-size:1.05rem; font-weight:400;
+  font-style:italic; color:var(--espresso);
+  line-height:1.7; margin-bottom:24px;
+}
+.rev-author {
+  font-family:var(--font-body);
+  font-size:.62rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ash);
+}
+
+/* ── LOCATIONS ── */
+#locations {
+  background:var(--espresso);
+  padding:130px 6vw;
+  display:grid; grid-template-columns:1fr 1fr; gap:4px;
+}
+.loc-card {
+  background:var(--roast);
+  padding:64px 52px;
+  position:relative; overflow:hidden;
+}
+.loc-card::after {
+  content:'';
+  position:absolute; bottom:0; left:0;
+  width:0; height:2px;
+  background:var(--latte);
+  transition:width .5s ease;
+}
+.loc-card:hover::after { width:100%; }
+.loc-city {
+  font-family:var(--font-disp);
+  font-size:.65rem; font-weight:300;
+  letter-spacing:.35em; text-transform:uppercase;
+  color:var(--latte); margin-bottom:20px;
+}
+.loc-name {
+  font-family:var(--font-disp);
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:300; color:var(--cream);
+  line-height:1.05; margin-bottom:28px;
+}
+.loc-detail {
+  font-size:.82rem; font-weight:300;
+  color:rgba(240,230,211,.5);
+  line-height:1.9; margin-bottom:8px;
+}
+.loc-phone {
+  font-family:var(--font-body);
+  font-size:.8rem; font-weight:400;
+  color:var(--latte); margin-top:20px;
+  letter-spacing:.05em; text-decoration:none;
+  display:inline-block;
+  transition:color .2s;
+}
+.loc-phone:hover { color:var(--cream); }
+.loc-hours {
+  margin-top:32px; padding-top:24px;
+  border-top:1px solid rgba(196,149,106,.15);
+  font-size:.75rem; font-weight:300;
+  color:rgba(240,230,211,.35); letter-spacing:.1em;
+}
+
+/* ── ORDER / CTA ── */
+#order {
+  background:var(--cream);
+  padding:130px 6vw;
+  text-align:center;
+}
+.order-eyebrow {
+  font-family:var(--font-body);
+  font-size:.6rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--caramel);
+  margin-bottom:20px;
+}
+.order-title {
+  font-family:var(--font-disp);
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:300; line-height:.95;
+  margin-bottom:32px; color:var(--espresso);
+}
+.order-title em { font-style:italic; color:var(--caramel); }
+.order-sub {
+  font-size:.88rem; font-weight:300;
+  color:var(--ash); max-width:460px;
+  margin:0 auto 48px; line-height:1.8;
+}
+.order-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-dark {
+  font-family:var(--font-body);
+  font-size:.65rem; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--cream); background:var(--espresso);
+  padding:16px 44px; text-decoration:none;
+  transition:background .25s;
+  display:inline-block;
+}
+.btn-dark:hover { background:var(--mahogany); }
+.btn-outline {
+  font-family:var(--font-body);
+  font-size:.65rem; font-weight:400;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--espresso);
+  border:1px solid rgba(28,16,8,.25);
+  padding:16px 44px; text-decoration:none;
+  transition:border-color .25s, color .25s;
+  display:inline-block;
+}
+.btn-outline:hover { border-color:var(--caramel); color:var(--caramel); }
+
+/* delivery badges */
+.delivery-badges {
+  display:flex; gap:20px; justify-content:center;
+  margin-top:48px; flex-wrap:wrap;
+}
+.d-badge {
+  font-family:var(--font-body);
+  font-size:.6rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ash);
+  border:1px solid rgba(28,16,8,.12);
+  padding:10px 22px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background:var(--espresso);
+  padding:64px 6vw 40px;
+  border-top:1px solid rgba(196,149,106,.1);
+}
+.foot-top {
+  display:flex; justify-content:space-between;
+  align-items:flex-start; margin-bottom:48px;
+  flex-wrap:wrap; gap:40px;
+}
+.foot-logo {
+  font-family:var(--font-disp);
+  font-size:2rem; font-weight:300;
+  letter-spacing:.2em; color:var(--cream);
+}
+.foot-tagline {
+  font-size:.72rem; color:rgba(240,230,211,.3);
+  margin-top:8px; letter-spacing:.1em;
+}
+.foot-nav { display:flex; gap:48px; flex-wrap:wrap; }
+.foot-col-title {
+  font-family:var(--font-body);
+  font-size:.58rem; letter-spacing:.25em;
+  text-transform:uppercase; color:var(--latte);
+  margin-bottom:18px;
+}
+.foot-col a {
+  display:block; font-size:.8rem; font-weight:300;
+  color:rgba(240,230,211,.35); text-decoration:none;
+  margin-bottom:10px; transition:color .2s;
+}
+.foot-col a:hover { color:var(--cream); }
+.foot-bottom {
+  display:flex; justify-content:space-between;
+  align-items:center; padding-top:28px;
+  border-top:1px solid rgba(196,149,106,.08);
+  flex-wrap:wrap; gap:12px;
+}
+.foot-copy {
+  font-size:.6rem; color:rgba(240,230,211,.2);
+  letter-spacing:.1em;
+}
+.foot-credit {
+  font-size:.6rem; color:rgba(240,230,211,.2);
+  letter-spacing:.1em;
+}
+.foot-credit span { color:var(--latte); }
+.foot-insta {
+  font-family:var(--font-body);
+  font-size:.62rem; letter-spacing:.15em;
+  color:var(--latte); text-decoration:none;
+  transition:color .2s;
+}
+.foot-insta:hover { color:var(--cream); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  #signature,#locations{grid-template-columns:1fr; gap:0;}
+  #ambiance{grid-template-columns:1fr;}
+  .cup-scene{width:80%; right:10%; opacity:.25; top:30%;}
+  .hero-title{font-size:clamp(3rem,14vw,5rem);}
+  .foot-top{flex-direction:column;}
+  .foot-nav{gap:32px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur-dot" id="curDot"></div>
+<div class="cur-ring" id="curRing"></div>
+<div id="progress"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <svg class="loader-bean" viewBox="0 0 56 56" fill="none">
+    <ellipse cx="28" cy="28" rx="22" ry="14" fill="#2E1A0E" stroke="#C4956A" stroke-width="1.5"/>
+    <path d="M 28 14 Q 36 22 28 28 Q 20 34 28 42" stroke="#C4956A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="loader-name">Cofina</div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">Cofina</a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#signature">Signature</a></li>
+    <li><a href="#locations">Locations</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <a class="nav-order" href="#order">Order Now</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Steam lines -->
+  <div class="steam-wrap">
+    <div class="steam" style="left:48%;height:30%;top:20%;animation-duration:4s;animation-delay:0s;"></div>
+    <div class="steam" style="left:50%;height:25%;top:22%;animation-duration:5s;animation-delay:1s;opacity:.7;"></div>
+    <div class="steam" style="left:52%;height:28%;top:18%;animation-duration:4.5s;animation-delay:2s;"></div>
+    <div class="steam" style="left:46%;height:20%;top:25%;animation-duration:6s;animation-delay:.5s;opacity:.5;"></div>
+  </div>
+
+  <!-- SVG Coffee scene -->
+  <svg class="cup-scene" viewBox="0 0 560 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Saucer shadow -->
+    <ellipse cx="280" cy="420" rx="200" ry="18" fill="rgba(0,0,0,0.4)"/>
+    <!-- Saucer -->
+    <ellipse cx="280" cy="410" rx="180" ry="16" fill="#1C1008" stroke="#4A2C17" stroke-width="1.5"/>
+    <ellipse cx="280" cy="408" rx="150" ry="11" fill="#2E1A0E"/>
+    <!-- Cup body -->
+    <path d="M 140 200 L 160 400 Q 280 420 400 400 L 420 200 Z" fill="#2E1A0E"/>
+    <path d="M 142 202 L 161 398 Q 280 416 399 398 L 418 202 Z" fill="#241508"/>
+    <!-- Cup rim -->
+    <ellipse cx="280" cy="200" rx="140" ry="22" fill="#2E1A0E" stroke="#4A2C17" stroke-width="1.5"/>
+    <!-- Coffee surface -->
+    <ellipse cx="280" cy="200" rx="135" ry="20" fill="#1C1008"/>
+    <!-- Latte art - rosette -->
+    <path d="M 280 188 Q 295 194 280 200 Q 265 206 280 212 Q 295 218 280 200" stroke="#C4956A" stroke-width="1.5" fill="none" opacity="0.6" stroke-dasharray="300" stroke-dashoffset="300">
+      <animate attributeName="stroke-dashoffset" from="300" to="0" dur="3s" begin="2s" fill="freeze"/>
+    </path>
+    <path d="M 256 196 Q 280 192 304 196 Q 280 204 256 196" stroke="#8B5E3C" stroke-width="1" fill="none" opacity="0.5" stroke-dasharray="200" stroke-dashoffset="200">
+      <animate attributeName="stroke-dashoffset" from="200" to="0" dur="2s" begin="2.5s" fill="freeze"/>
+    </path>
+    <!-- Heart latte art -->
+    <path d="M 272 195 Q 272 190 280 193 Q 288 190 288 195 Q 288 202 280 208 Q 272 202 272 195" fill="#C4956A" opacity="0.35">
+      <animate attributeName="opacity" from="0" to="0.35" dur="1s" begin="3s" fill="freeze"/>
+    </path>
+    <!-- Handle -->
+    <path d="M 420 250 Q 480 260 480 310 Q 480 360 420 370" stroke="#4A2C17" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M 420 250 Q 468 262 468 310 Q 468 356 420 370" stroke="#2E1A0E" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <!-- Steam from cup -->
+    <path d="M 240 185 Q 235 160 242 140 Q 248 120 238 100" stroke="rgba(240,230,211,0.2)" stroke-width="2" fill="none" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="translate" values="0,0;3,-5;0,0" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 280 180 Q 278 155 285 135 Q 290 115 282 95" stroke="rgba(240,230,211,0.15)" stroke-width="2" fill="none" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="translate" values="0,0;-2,-6;0,0" dur="3.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 320 185 Q 325 158 318 138 Q 312 118 322 98" stroke="rgba(240,230,211,0.18)" stroke-width="2" fill="none" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="translate" values="0,0;4,-4;0,0" dur="4s" repeatCount="indefinite"/>
+    </path>
+    <!-- Cofina text on cup -->
+    <text x="220" y="320" font-family="Georgia, serif" font-size="22" font-style="italic" fill="rgba(196,149,106,0.3)" letter-spacing="4">cofina</text>
+  </svg>
+
+  <div class="hero-eyebrow">Specialty Coffee — Est. Dubai & Sharjah</div>
+  <h1 class="hero-title">
+    Craft in<br>
+    <em>every</em><br>
+    cup.
+  </h1>
+  <p class="hero-sub">From single-origin pour-overs to our legendary Spanish Latte — precision brewed, always for you.</p>
+  <div class="hero-actions">
+    <a href="#menu" class="btn-light">Explore Menu</a>
+    <a href="#locations" class="btn-ghost">Find Us</a>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-txt">Scroll</span>
+    <div class="scroll-tick"></div>
+  </div>
+</section>
+
+<!-- JOURNEY: Scroll-Driven Story -->
+<section id="journey">
+  <div class="journey-sticky">
+    <div class="journey-bg"></div>
+    <div id="ambientWord">origin</div>
+
+    <!-- Animated objects -->
+    <div class="anim-stage">
+      <!-- Bean SVG -->
+      <svg id="beanSvg" viewBox="0 0 200 140" fill="none">
+        <ellipse cx="100" cy="70" rx="80" ry="52" fill="#2E1A0E" stroke="#C4956A" stroke-width="1.5"/>
+        <path d="M 100 18 Q 125 38 100 55 Q 75 72 100 88 Q 125 104 100 122" stroke="#C4956A" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <text x="50%" y="58%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia" font-size="9" font-style="italic" fill="rgba(196,149,106,0.6)" letter-spacing="3">SPECIALTY</text>
+      </svg>
+
+      <!-- Cup SVG (appears mid scroll) -->
+      <svg id="cupSvg" viewBox="0 0 280 240" fill="none">
+        <ellipse cx="140" cy="220" rx="110" ry="10" fill="rgba(0,0,0,0.3)"/>
+        <path d="M 50 80 L 65 210 Q 140 228 215 210 L 230 80 Z" fill="#2E1A0E" stroke="#4A2C17" stroke-width="1"/>
+        <ellipse cx="140" cy="80" rx="90" ry="14" fill="#2E1A0E" stroke="#4A2C17" stroke-width="1.5"/>
+        <ellipse cx="140" cy="80" rx="85" ry="12" fill="#1C1008"/>
+        <!-- latte art -->
+        <path class="swirl-line" d="M 120 75 Q 140 68 160 75 Q 140 82 120 75" stroke="#C4956A" stroke-width="1.5" fill="none" stroke-dasharray="200" stroke-dashoffset="200" opacity="0.7"/>
+        <path d="M 230 120 Q 268 128 268 160 Q 268 192 230 200" stroke="#4A2C17" stroke-width="10" fill="none" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Pour stream -->
+      <svg id="pourSvg" viewBox="0 0 180 300" fill="none" style="top:5%;">
+        <path d="M 90 10 Q 88 80 95 140 Q 100 200 92 260" stroke="rgba(196,149,106,0.6)" stroke-width="4" fill="none" stroke-linecap="round">
+          <animate attributeName="stroke-dasharray" values="0,500;500,0" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <ellipse cx="94" cy="265" rx="20" ry="6" fill="rgba(28,16,8,0.8)" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <!-- Text panels -->
+    <div class="j-panel" id="jp1">
+      <div class="j-content">
+        <div class="j-step">01 — The Origin</div>
+        <h2 class="j-title">It starts with<br>the <em>bean.</em></h2>
+        <p class="j-body">Every cup at Cofina begins with hand-selected specialty-grade beans. We source from farms where altitude, soil, and season create a distinct character that can't be replicated.</p>
+      </div>
+    </div>
+    <div class="j-panel right" id="jp2">
+      <div class="j-content">
+        <div class="j-step">02 — The Craft</div>
+        <h2 class="j-title">Precision is<br><em>everything.</em></h2>
+        <p class="j-body">Our baristas train for months before they touch an espresso machine. Temperature, pressure, timing — every variable controlled. The result is a shot that tastes exactly as it should.</p>
+        <span class="j-price">V60 · Chemex · Aeropress — from AED 28</span>
+      </div>
+    </div>
+    <div class="j-panel" id="jp3">
+      <div class="j-content">
+        <div class="j-step">03 — The Signature</div>
+        <h2 class="j-title">Our Spanish<br><em>Latte.</em></h2>
+        <p class="j-body">Condensed milk, a precise espresso pull, and steamed whole milk. Simple in theory, obsessed over in practice. Dubai's most recommended café drink in Al Warqa.</p>
+        <span class="j-price">Hot Spanish Latte — AED 24</span>
+      </div>
+    </div>
+    <div class="j-panel right" id="jp4">
+      <div class="j-content">
+        <div class="j-step">04 — The Space</div>
+        <h2 class="j-title">Your third<br><em>place.</em></h2>
+        <p class="j-body">Quiet mornings. Lively afternoons. Clean lines, soft light, and a team that knows your order. Cofina isn't just coffee — it's the place you come back to.</p>
+        <span class="j-price">Al Warqa · Dubai · Sharjah</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE DRINK -->
+<section id="signature">
+  <div class="sig-content">
+    <div class="sig-label">Our Flagship</div>
+    <h2 class="sig-title">The <em>Spanish<br>Latte</em> story.</h2>
+    <p class="sig-body">It started as an experiment. A barista's curiosity — what happens when you replace sugar with condensed milk, and let the espresso speak through cream? The result stopped everyone in their tracks. It's been our number one ever since.</p>
+    <p class="sig-body">We serve it hot, iced, or in a 1-litre bottle to share. Because some things are too good to keep to yourself.</p>
+    <div class="order-btns" style="justify-content:flex-start; margin-top:32px;">
+      <a href="talabat://search?q=cofina" class="btn-dark">Order on Talabat</a>
+    </div>
+  </div>
+  <div class="sig-visual">
+    <svg class="sig-cup-large" viewBox="0 0 320 380" fill="none">
+      <!-- Large detailed cup -->
+      <ellipse cx="160" cy="348" rx="130" ry="12" fill="rgba(0,0,0,0.4)"/>
+      <path d="M 40 120 L 58 340 Q 160 362 262 340 L 280 120 Z" fill="#2E1A0E"/>
+      <path d="M 42 122 L 60 338 Q 160 358 260 338 L 278 122 Z" fill="#241508"/>
+      <ellipse cx="160" cy="120" rx="120" ry="18" fill="#2E1A0E" stroke="#4A2C17" stroke-width="2"/>
+      <ellipse cx="160" cy="120" rx="115" ry="16" fill="#1C1008"/>
+      <!-- Latte art rosette -->
+      <path d="M 160 108 Q 180 114 160 120 Q 140 126 160 132 Q 180 138 160 120" stroke="#C4956A" stroke-width="2" fill="none" opacity="0.7" stroke-dasharray="400" stroke-dashoffset="400">
+        <animate attributeName="stroke-dashoffset" from="400" to="0" dur="3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 130 116 Q 160 110 190 116 Q 160 124 130 116" stroke="#8B5E3C" stroke-width="1.5" fill="none" opacity="0.6" stroke-dasharray="200" stroke-dashoffset="200">
+        <animate attributeName="stroke-dashoffset" from="200" to="0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- Handle -->
+      <path d="M 280 180 Q 340 192 340 240 Q 340 288 280 300" stroke="#4A2C17" stroke-width="16" fill="none" stroke-linecap="round"/>
+      <path d="M 280 180 Q 328 194 328 240 Q 328 284 280 300" stroke="#2E1A0E" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- brand text on cup -->
+      <text x="50%" y="68%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia, serif" font-size="24" font-style="italic" fill="rgba(196,149,106,0.25)" letter-spacing="6">cofina</text>
+      <!-- Steam -->
+      <path d="M 120 104 Q 115 80 122 60" stroke="rgba(240,230,211,0.25)" stroke-width="2" fill="none" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="translate" values="0,0;3,-8;0,0" dur="3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 160 100 Q 158 76 164 56" stroke="rgba(240,230,211,0.2)" stroke-width="2" fill="none" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="translate" values="0,0;-2,-7;0,0" dur="3.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M 200 104 Q 204 80 198 60" stroke="rgba(240,230,211,0.22)" stroke-width="2" fill="none" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="translate" values="0,0;4,-6;0,0" dur="4.2s" repeatCount="indefinite"/>
+      </path>
+    </svg>
+    <div class="sig-name-overlay">Spanish<br>Latte</div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="menu-eyebrow">Full Menu</div>
+  <h2 class="menu-title">What will you<br><em>discover</em> today?</h2>
+  <div class="menu-tabs">
+    <button class="tab-btn active" data-tab="hot">Hot Drinks</button>
+    <button class="tab-btn" data-tab="cold">Cold & Blended</button>
+    <button class="tab-btn" data-tab="tea">Matcha & Tea</button>
+    <button class="tab-btn" data-tab="food">Pastries</button>
+  </div>
+
+  <div class="menu-panel active" id="tab-hot">
+    <div class="menu-item"><div><div class="item-name">Hot Spanish Latte</div><div class="item-desc">Condensed milk, espresso, steamed milk — our flagship</div></div><div class="item-price">AED 24</div></div>
+    <div class="menu-item"><div><div class="item-name">Latte</div><div class="item-desc">Double espresso, silky steamed whole milk</div></div><div class="item-price">AED 22</div></div>
+    <div class="menu-item"><div><div class="item-name">Cappuccino</div><div class="item-desc">Equal parts espresso, steamed milk, micro-foam</div></div><div class="item-price">AED 22</div></div>
+    <div class="menu-item"><div><div class="item-name">Flat White</div><div class="item-desc">Ristretto base, velvety microfoam, intense and smooth</div></div><div class="item-price">AED 24</div></div>
+    <div class="menu-item"><div><div class="item-name">Hot Mocha</div><div class="item-desc">Espresso, chocolate, steamed milk — rich and indulgent</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Red Velvet Latte</div><div class="item-desc">House red velvet blend, espresso, steamed milk</div></div><div class="item-price">AED 27</div></div>
+    <div class="menu-item"><div><div class="item-name">V60 Pour Over</div><div class="item-desc">Manual brew, single origin, full clarity of flavour</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Chemex</div><div class="item-desc">Clean, bright, floral notes — a purist's choice</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Aeropress</div><div class="item-desc">Bold, concentrated, smooth. Fast and precise.</div></div><div class="item-price">AED 28</div></div>
+  </div>
+
+  <div class="menu-panel" id="tab-cold">
+    <div class="menu-item"><div><div class="item-name">Iced Spanish Latte</div><div class="item-desc">Our signature, chilled over ice — summer's best</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Iced Rose Latte</div><div class="item-desc">Cold espresso, rose water, chilled milk</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Pistachio Frappe</div><div class="item-desc">Blended pistachio, milk, espresso, cream</div></div><div class="item-price">AED 32</div></div>
+    <div class="menu-item"><div><div class="item-name">Creamy Mocha Frappe</div><div class="item-desc">Chocolate, espresso, blended ice, whipped cream</div></div><div class="item-price">AED 29</div></div>
+    <div class="menu-item"><div><div class="item-name">Mango Kreme</div><div class="item-desc">Fresh mango, cream blend, tropical and refreshing</div></div><div class="item-price">AED 27</div></div>
+    <div class="menu-item"><div><div class="item-name">Signature 1-Litre Bottle</div><div class="item-desc">Spanish Latte or signature drinks in bulk — perfect for sharing</div></div><div class="item-price">AED 112–120</div></div>
+  </div>
+
+  <div class="menu-panel" id="tab-tea">
+    <div class="menu-item"><div><div class="item-name">Matcha Latte</div><div class="item-desc">Ceremonial grade matcha, steamed oat or whole milk</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Taro Milk Tea</div><div class="item-desc">Creamy taro, specialty tea blend, lightly sweet</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Okinawa Milk Tea</div><div class="item-desc">Brown sugar, rich tea, milk — deeply caramelised</div></div><div class="item-price">AED 28</div></div>
+    <div class="menu-item"><div><div class="item-name">Winter Melon Tea</div><div class="item-desc">Delicate and subtly sweet — a quiet favourite</div></div><div class="item-price">AED 28</div></div>
+  </div>
+
+  <div class="menu-panel" id="tab-food">
+    <div class="menu-item"><div><div class="item-name">Cheese & Za'atar Croissant</div><div class="item-desc">Buttery, flaky, filled with melted cheese and za'atar</div></div><div class="item-price">AED 16</div></div>
+    <div class="menu-item"><div><div class="item-name">Kiri Bun</div><div class="item-desc">Soft milk bun, Kiri cream cheese filling</div></div><div class="item-price">AED 19</div></div>
+    <div class="menu-item"><div><div class="item-name">Mini Raspberry Cheesecake</div><div class="item-desc">Light, tart, creamy — pairs perfectly with any latte</div></div><div class="item-price">AED 10</div></div>
+    <div class="menu-item"><div><div class="item-name">Salted Nutella Cookie</div><div class="item-desc">Crispy edges, gooey centre, sea salt finish</div></div><div class="item-price">AED 10</div></div>
+    <div class="menu-item"><div><div class="item-name">Saffron Milk Cake</div><div class="item-desc">Tres leches style, saffron-infused, deeply aromatic</div></div><div class="item-price">AED 28–32</div></div>
+    <div class="menu-item"><div><div class="item-name">Pistachio Milk Cake</div><div class="item-desc">Rich pistachio cream, soaked sponge, indulgent</div></div><div class="item-price">AED 28–32</div></div>
+  </div>
+</section>
+
+<!-- AMBIANCE -->
+<section id="ambiance">
+  <div class="amb-card">
+    <div class="amb-num">4.3</div>
+    <div class="amb-label">Rated</div>
+    <div class="amb-title">Consistently Loved</div>
+    <p class="amb-body">Over thousands of reviews across Google and social platforms, one word keeps coming back: consistent. Great coffee, every single time.</p>
+  </div>
+  <div class="amb-card">
+    <div class="amb-num">✦</div>
+    <div class="amb-label">The Space</div>
+    <div class="amb-title">Hip. Clean. Yours.</div>
+    <p class="amb-body">Described as classy and contemporary. A quiet morning spot that becomes a lively social space by afternoon. Ample free parking. Always welcoming.</p>
+  </div>
+  <div class="amb-card">
+    <div class="amb-num">2</div>
+    <div class="amb-label">Locations</div>
+    <div class="amb-title">Dubai & Sharjah</div>
+    <p class="amb-body">Serving Al Warqa since day one, and now bringing the same craft coffee experience to the student and professional community of Sharjah.</p>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="rev-eyebrow">What People Say</div>
+  <h2 class="rev-title">Our guests speak<br><em>for themselves.</em></h2>
+  <div style="overflow:hidden;">
+    <div class="rev-track">
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Honestly one of the best coffee spots in Dubai. The Spanish Latte is next level — I drive from Deira just for it."</p><div class="rev-author">Ahmad K. — Google Review</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The latte art alone is worth visiting. But the taste? Consistently excellent. My go-to every morning before work."</p><div class="rev-author">Sara M. — Al Warqa Regular</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Clean, modern, calm. The kind of café you want to spend three hours in with a book. Staff are always helpful and kind."</p><div class="rev-author">Lina F. — Sharjah Branch</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The Pistachio Frappe changed my life. Ordered the 1-litre bottle for a team meeting and everyone was obsessed."</p><div class="rev-author">Khalid R. — Corporate Order</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"As a V60 lover, I was skeptical. But Cofina nails the manual brew. Clean, bright, and perfectly balanced."</p><div class="rev-author">Nour A. — Specialty Coffee Enthusiast</div></div>
+      <!-- duplicate for loop -->
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Honestly one of the best coffee spots in Dubai. The Spanish Latte is next level — I drive from Deira just for it."</p><div class="rev-author">Ahmad K. — Google Review</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The latte art alone is worth visiting. But the taste? Consistently excellent. My go-to every morning before work."</p><div class="rev-author">Sara M. — Al Warqa Regular</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"Clean, modern, calm. The kind of café you want to spend three hours in with a book. Staff are always helpful and kind."</p><div class="rev-author">Lina F. — Sharjah Branch</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"The Pistachio Frappe changed my life. Ordered the 1-litre bottle for a team meeting and everyone was obsessed."</p><div class="rev-author">Khalid R. — Corporate Order</div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">"As a V60 lover, I was skeptical. But Cofina nails the manual brew. Clean, bright, and perfectly balanced."</p><div class="rev-author">Nour A. — Specialty Coffee Enthusiast</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section id="locations">
+  <div class="loc-card">
+    <div class="loc-city">Dubai</div>
+    <div class="loc-name">Al Warqa<br>Branch</div>
+    <p class="loc-detail">Q1 Mall, Ground Floor<br>Shop 69/70, Al Warqa'a 1</p>
+    <a href="tel:+97143233688" class="loc-phone">+971 4 323 3688</a>
+    <div class="loc-hours">Free Parking Available · Open Daily</div>
+  </div>
+  <div class="loc-card">
+    <div class="loc-city">Sharjah</div>
+    <div class="loc-name">University<br>City Branch</div>
+    <p class="loc-detail">University City Road<br>Muwaileh Commercial, Industrial Area</p>
+    <a href="tel:+97165422626" class="loc-phone">+971 6 542 2626</a>
+    <div class="loc-hours">Serving Students & Professionals Daily</div>
+  </div>
+</section>
+
+<!-- ORDER CTA -->
+<section id="order">
+  <div class="order-eyebrow">Order Now</div>
+  <h2 class="order-title">Your coffee.<br><em>Delivered.</em></h2>
+  <p class="order-sub">Can't make it in? We deliver anywhere in Dubai and Sharjah through your favourite platforms.</p>
+  <div class="order-btns">
+    <a href="talabat://search?q=cofina" class="btn-dark">Order on Talabat</a>
+    <a href="https://wa.me/971432333688?text=Hi%20Cofina%2C%20I%27d%20like%20to%20place%20an%20order" class="btn-outline">Order via WhatsApp</a>
+  </div>
+  <div class="delivery-badges">
+    <span class="d-badge">📍 Al Warqa, Dubai</span>
+    <span class="d-badge">📍 University City, Sharjah</span>
+    <span class="d-badge">📱 @cofina.ae</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-top">
+    <div>
+      <div class="foot-logo">Cofina</div>
+      <div class="foot-tagline">Specialty Coffee · Dubai & Sharjah</div>
+      <a href="instagram://user?username=cofina.ae" class="foot-insta" style="display:block;margin-top:16px;">@cofina.ae</a>
+    </div>
+    <div class="foot-nav">
+      <div class="foot-col">
+        <div class="foot-col-title">Menu</div>
+        <a href="#menu">Hot Drinks</a>
+        <a href="#menu">Cold & Blended</a>
+        <a href="#menu">Matcha & Tea</a>
+        <a href="#menu">Pastries</a>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Visit</div>
+        <a href="#locations">Al Warqa — Dubai</a>
+        <a href="#locations">Sharjah Branch</a>
+        <a href="#order">Order Delivery</a>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div class="foot-copy">© 2024 COFINA SPECIALTY COFFEE. ALL RIGHTS RESERVED.</div>
+    <div class="foot-credit">CRAFTED BY <span>MAVEN VERGE MEDIA</span></div>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── CURSOR
+const dot = document.getElementById('curDot');
+const ring = document.getElementById('curRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;});
+(function animCursor(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button,.menu-item,.loc-card,.rev-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='56px';ring.style.height='56px';ring.style.borderColor='rgba(139,94,60,.6)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(139,94,60,.45)';});
+});
+
+// ── LOADER
+setTimeout(()=>{
+  gsap.to('#loader',{opacity:0,duration:.7,delay:.3,onComplete:()=>{
+    document.getElementById('loader').style.display='none';
+    heroIn();
+  }});
+},1600);
+
+// ── HERO IN
+function heroIn(){
+  gsap.to('.hero-eyebrow',{opacity:1,y:0,duration:.9,ease:'power3.out',delay:.1});
+  gsap.fromTo('.hero-title',{y:50,opacity:0},{y:0,opacity:1,duration:1.1,ease:'power3.out',delay:.25});
+  gsap.to('.hero-sub',{opacity:1,duration:.9,ease:'power3.out',delay:.55});
+  gsap.to('.hero-actions',{opacity:1,duration:.8,delay:.8});
+  gsap.to('.hero-scroll',{opacity:1,duration:1,delay:1.3});
+  gsap.fromTo('.cup-scene',{x:60,opacity:0},{x:0,opacity:1,duration:1.4,ease:'power3.out',delay:.3});
+}
+
+// ── NAV + PROGRESS
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('solid',window.scrollY>80);
+  const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('progress').style.width=pct+'%';
+});
+
+// ── JOURNEY SCROLL
+// Bean rotates and fades; cup appears; pour appears
+gsap.to('#beanSvg',{
+  scrollTrigger:{trigger:'#journey',start:'top top',end:'25% top',scrub:true},
+  rotation:180, scale:1.4, opacity:0,
+});
+gsap.to('#cupSvg',{
+  scrollTrigger:{trigger:'#journey',start:'15% top',end:'45% top',scrub:true},
+  opacity:1, scale:1,
+});
+gsap.to('#pourSvg',{
+  scrollTrigger:{trigger:'#journey',start:'35% top',end:'60% top',scrub:true},
+  opacity:1,
+});
+gsap.to('#pourSvg',{
+  scrollTrigger:{trigger:'#journey',start:'60% top',end:'75% top',scrub:true},
+  opacity:0,
+});
+
+// Ambient word changes
+const words=['origin','craft','warmth','place'];
+const ambWords=['origin','craft','warmth','place'];
+words.forEach((w,i)=>{
+  ScrollTrigger.create({
+    trigger:'#journey',
+    start:`${i*25}% top`,
+    end:`${(i+1)*25}% top`,
+    onEnter:()=>{document.getElementById('ambientWord').textContent=ambWords[i];},
+    onEnterBack:()=>{document.getElementById('ambientWord').textContent=ambWords[i];},
+  });
+});
+
+// Journey panels
+['jp1','jp2','jp3','jp4'].forEach((id,i)=>{
+  const start=i*22;
+  ScrollTrigger.create({
+    trigger:'#journey',
+    start:`${start}% top`,
+    end:`${start+22}% top`,
+    onEnter:()=>gsap.to(`#${id}`,{opacity:1,x:0,duration:.7,ease:'power2.out'}),
+    onLeave:()=>gsap.to(`#${id}`,{opacity:0,duration:.4}),
+    onEnterBack:()=>gsap.to(`#${id}`,{opacity:1,duration:.5}),
+    onLeaveBack:()=>gsap.to(`#${id}`,{opacity:0,duration:.4}),
+  });
+  // set initial offset
+  gsap.set(`#${id}`,{x: i%2===0?-30:30});
+});
+
+// ── SIGNATURE section
+gsap.from('.sig-content > *',{
+  scrollTrigger:{trigger:'#signature',start:'top 75%'},
+  x:-40,opacity:0,duration:.9,stagger:.15,ease:'power3.out'
+});
+gsap.from('.sig-visual',{
+  scrollTrigger:{trigger:'#signature',start:'top 75%'},
+  x:40,opacity:0,duration:1,ease:'power3.out'
+});
+
+// ── MENU items
+gsap.from('.menu-item',{
+  scrollTrigger:{trigger:'#menu',start:'top 80%'},
+  y:30,opacity:0,duration:.6,stagger:.04,ease:'power2.out'
+});
+
+// ── AMBIANCE
+gsap.from('.amb-card',{
+  scrollTrigger:{trigger:'#ambiance',start:'top 80%'},
+  y:50,opacity:0,duration:.8,stagger:.15,ease:'power3.out'
+});
+
+// ── LOCATIONS
+gsap.from('.loc-card',{
+  scrollTrigger:{trigger:'#locations',start:'top 80%'},
+  y:40,opacity:0,duration:.8,stagger:.2,ease:'power3.out'
+});
+
+// ── ORDER
+gsap.from('#order > *',{
+  scrollTrigger:{trigger:'#order',start:'top 80%'},
+  y:30,opacity:0,duration:.7,stagger:.15,ease:'power3.out'
+});
+
+// ── MENU TABS
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel=document.getElementById('tab-'+btn.dataset.tab);
+    panel.classList.add('active');
+    gsap.from(panel.querySelectorAll('.menu-item'),{y:20,opacity:0,duration:.4,stagger:.04,ease:'power2.out'});
+  });
+});
+</script>
+</body>
+</html>
